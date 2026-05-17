@@ -4,159 +4,308 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Select Showtime - bOOk Picturr</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
   <style>
+    :root {
+      --crimson: #c0392b;
+      --crimson-glow: rgba(192,57,43,0.5);
+      --gold: #f0c040;
+      --deep: #07080f;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text: #ddd8cc;
+      --muted: rgba(221,216,204,0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #fff;
+      background: var(--deep);
+      font-family: 'Outfit', sans-serif;
+      color: var(--text);
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* Navbar */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(192,57,43,0.08), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(240,192,64,0.06), transparent 60%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, rgba(15,20,40,0.95), var(--deep) 100%);
+    }
+
     .navbar {
-      background: linear-gradient(90deg, #0d6efd, #6610f2);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    }
-    .navbar-brand {
-      font-weight: bold;
-      font-size: 1.4rem;
-      letter-spacing: 1px;
-      color: #fff !important;
-    }
-    .navbar-brand:hover {
-      text-shadow: 0 0 8px #ffc107;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,8,15,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 1.5rem;
+      animation: slideDown 0.7s ease both;
     }
 
-    /* Back Button */
-    #backBtnContainer .btn {
-      border-radius: 50px;
-      padding: 0.5rem 1.2rem;
-      font-weight: 500;
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-100%); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .navbar-brand {
+      font-family: 'Cinzel', serif;
+      font-size: 1.45rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--gold) !important;
+      text-shadow: 0 0 20px rgba(240,192,64,0.5);
+      text-decoration: none;
+    }
+
+    .navbar-brand:hover {
+      text-shadow: 0 0 40px rgba(240,192,64,0.9);
+    }
+
+    .brand-dot {
+      color: var(--crimson);
+    }
+
+    .nav-link {
+      color: var(--muted) !important;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+      color: var(--gold) !important;
+    }
+
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      min-height: calc(100vh - 75px);
+      padding: 3rem 1rem 5rem;
+    }
+
+    .back-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      padding: 0.55rem 1.2rem;
+      border-radius: 3px;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
       transition: all 0.3s ease;
     }
-    #backBtnContainer .btn:hover {
-      background: #ffc107;
-      border-color: #ffc107;
-      color: #000;
-      transform: translateX(-3px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+
+    .back-btn:hover {
+      background: var(--crimson);
+      border-color: var(--crimson);
+      color: #fff;
+      box-shadow: 0 0 18px var(--crimson-glow);
+      transform: translateX(-4px);
     }
 
-    /* Showtime Card */
     .showtime-container {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 2.5rem;
-      max-width: 650px;
-      margin: auto;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-      animation: fadeInUp 1s ease;
+      max-width: 720px;
+      margin: 3rem auto 0;
+      padding: 3rem 2rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      backdrop-filter: blur(22px);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+      animation: fadeUp 0.9s ease both;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Animations */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
+    .showtime-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(240,192,64,0.04), transparent);
+      pointer-events: none;
     }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.6); }
-      70% { box-shadow: 0 0 0 15px rgba(13, 110, 253, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(35px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 0.8rem;
     }
 
     #movieTitle {
-      font-size: 2rem;
-      font-weight: bold;
-      text-shadow: 0 0 8px rgba(255,255,255,0.3);
-      margin-bottom: 1rem;
-      animation: fadeInUp 1.2s ease;
-    }
-    p.text-muted {
-      color: #ddd !important;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, #fff 0%, var(--gold) 55%, #c08020 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.8rem;
     }
 
-    /* Showtime Buttons */
-    .btn-outline-primary {
-      border-radius: 30px;
-      padding: 0.9rem 1.5rem;
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: #fff;
-      border: 2px solid #0d6efd;
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .section-rule {
+      width: 55px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 1rem auto 2rem;
+    }
+
+    .time-btn {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
       transition: all 0.3s ease;
-      animation: pulse 2s infinite;
-    }
-    .btn-outline-primary:hover:not(:disabled) {
-      background: linear-gradient(45deg, #0d6efd, #6610f2);
-      border-color: transparent;
-      transform: scale(1.07);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    }
-    .btn-outline-primary:active:not(:disabled) {
-      transform: scale(0.95);
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Disabled Buttons (same style, just slightly faded) */
-    .btn-outline-primary:disabled {
-      color: #fff !important;
-      border: 2px solid #0d6efd !important;
-      background: transparent !important;
-      opacity: 0.6;
-      cursor: not-allowed !important;
-      box-shadow: none !important;
-      animation: none !important;
+    .time-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.45s;
+    }
+
+    .time-btn:hover:not(:disabled)::after {
+      transform: translateX(100%);
+    }
+
+    .time-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--crimson), #8b1a1a);
+      border-color: var(--crimson);
+      color: #fff;
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 10px 28px var(--crimson-glow);
+    }
+
+    .time-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      color: var(--muted);
+      background: rgba(255,255,255,0.02);
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 576px) {
+      .showtime-container {
+        padding: 2.2rem 1.2rem;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-dark">
-  <div class="container">
-    <a class="navbar-brand" href="index.html">🎬 bOOk Picturr</a>
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">bOOk<span class="brand-dot">·</span>Picturr</a>
+
+    <button class="navbar-toggler border-secondary" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon" style="filter:invert(1)"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Movies</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">ContactUs</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">My Tickets</a></li>
+      </ul>
+    </div>
   </div>
 </nav>
 
-<!-- Back Button -->
-<div class="container my-3" id="backBtnContainer" style="display:none;">
-  <button class="btn btn-outline-light" onclick="history.back()">← Back</button>
-</div>
+<div class="page-wrap">
+  <div class="container" id="backBtnContainer" style="display:none;">
+    <button class="back-btn" onclick="history.back()">← Back</button>
+  </div>
 
-<!-- Showtime Selection -->
-<div class="container my-5">
   <div class="showtime-container text-center">
-    <h2 id="movieTitle" class="text-info"></h2>
-    <p class="mb-4 text-muted">Choose a Showtime</p>
+    <p class="eyebrow">✦ Premium Cinema Booking ✦</p>
+    <h2 id="movieTitle">Movie Not Selected</h2>
+    <p class="subtitle">Choose Your Showtime</p>
+    <div class="section-rule"></div>
 
     <div class="row g-3">
       <div class="col-md-6">
-        <button class="btn btn-outline-primary w-100" onclick="selectShowtime('10:00 AM')">10:00 AM</button>
+        <button class="time-btn" onclick="selectShowtime('10:00 AM')">10:00 AM</button>
       </div>
       <div class="col-md-6">
-        <button class="btn btn-outline-primary w-100" onclick="selectShowtime('2:00 PM')">2:00 PM</button>
+        <button class="time-btn" onclick="selectShowtime('2:00 PM')">2:00 PM</button>
       </div>
       <div class="col-md-6">
-        <button class="btn btn-outline-primary w-100" onclick="selectShowtime('6:00 PM')">6:00 PM</button>
+        <button class="time-btn" onclick="selectShowtime('6:00 PM')">6:00 PM</button>
       </div>
       <div class="col-md-6">
-        <button class="btn btn-outline-primary w-100" onclick="selectShowtime('9:00 PM')">9:00 PM</button>
+        <button class="time-btn" onclick="selectShowtime('9:00 PM')">9:00 PM</button>
       </div>
-      <div class="col-md-6">
-        <button class="btn btn-outline-primary w-100" onclick="selectShowtime('11:30 PM')">11:30 PM</button>
+      <div class="col-md-6 mx-auto">
+        <button class="time-btn" onclick="selectShowtime('11:30 PM')">11:30 PM</button>
       </div>
     </div>
   </div>
 </div>
 
+<footer>
+  © 2025 bOOk Picturr · Premium Cinema Experience
+</footer>
+
 <script>
-  // Show back button
   if (!window.location.pathname.endsWith("index.html")) {
     document.getElementById("backBtnContainer").style.display = "block";
   }
 
-  // ✅ Get movie name from URL query string
   const urlParams = new URLSearchParams(window.location.search);
   let movie = urlParams.get("movie");
 
@@ -169,18 +318,16 @@
     document.getElementById("movieTitle").innerText = movie;
   }
 
-  // ✅ Store selected time & move to theatre page
   function selectShowtime(time) {
     localStorage.setItem("time", time);
     window.location.href = "theatre.html";
   }
 
-  // ✅ Disable past showtimes
   function disablePastShowtimes() {
     const now = new Date();
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-    document.querySelectorAll(".btn-outline-primary").forEach(btn => {
+    document.querySelectorAll(".time-btn").forEach(btn => {
       const showtime = btn.innerText.trim();
       const [time, modifier] = showtime.split(" ");
       let [hours, minutes] = time.split(":").map(Number);
@@ -189,6 +336,7 @@
       if (modifier === "AM" && hours === 12) hours = 0;
 
       const showMinutes = hours * 60 + minutes;
+
       if (showMinutes <= currentMinutes) {
         btn.disabled = true;
       }
@@ -199,5 +347,6 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

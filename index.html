@@ -4,271 +4,458 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>bOOk Picturr</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
+    :root {
+      --crimson: #c0392b;
+      --crimson-glow: rgba(192,57,43,0.5);
+      --gold: #f0c040;
+      --deep: #07080f;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text: #ddd8cc;
+      --muted: rgba(221,216,204,0.45);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #fff;
+      background: var(--deep);
+      font-family: 'Outfit', sans-serif;
+      color: var(--text);
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* Navbar */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(192,57,43,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(240,192,64,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, rgba(15,20,40,0.95) 0%, var(--deep) 100%);
+    }
+
+    /* NAVBAR */
+
+    
+
     .navbar {
-      background: linear-gradient(90deg, #0d6efd, #6610f2);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(7,8,15,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 1.5rem;
+      animation: slideDown 0.7s ease both;
     }
-    .navbar-brand span {
-      font-weight: bold;
-      font-size: 1.4rem;
-      letter-spacing: 1px;
-      color: #fff;
+    @keyframes slideDown { from{opacity:0;transform:translateY(-100%);} to{opacity:1;transform:none;} }
+
+    .navbar-brand {
+      font-family: 'Cinzel', serif;
+      font-size: 1.45rem; font-weight: 900; letter-spacing: 3px;
+      color: var(--gold) !important;
+      text-shadow: 0 0 20px rgba(240,192,64,0.5);
+      text-decoration: none;
+      transition: text-shadow 0.3s;
     }
-    .navbar-brand:hover {
-      text-shadow: 0 0 8px #ffc107;
-    }
+    .navbar-brand:hover { text-shadow: 0 0 40px rgba(240,192,64,0.9); }
+    .brand-dot { color: var(--crimson); }
+
     .nav-link {
-      transition: color 0.3s, text-shadow 0.3s;
+      color: var(--muted) !important;
+      font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase;
+      transition: color 0.3s !important; padding: 0.4rem 0.8rem !important;
     }
-    .nav-link:hover {
-      color: #ffc107 !important;
-      text-shadow: 0 0 8px rgba(255,193,7,0.8);
-    }
+    .nav-link:hover { color: var(--gold) !important; }
 
-    /* Search Bar */
     #searchInput {
-      border-radius: 25px;
-      padding: 0.6rem 1.2rem;
-      border: 2px solid transparent;
-      transition: 0.3s;
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: 40px;
+      color: var(--text); font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem; padding: 0.45rem 1.1rem 0.45rem 2.4rem;
+      width: 190px; outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s, width 0.4s;
     }
+    #searchInput::placeholder { color: var(--muted); }
     #searchInput:focus {
-      border-color: #0d6efd;
-      box-shadow: 0 0 12px rgba(13,110,253,0.8);
-      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 16px rgba(240,192,64,0.2);
+      width: 240px;
+    }
+    .search-wrap { position: relative; }
+    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.4; pointer-events:none; }
+
+    /* HERO */
+    .hero {
+      position: relative; z-index: 1;
+      text-align: center; padding: 7rem 1rem 5rem;
+      animation: fadeUp 1s 0.2s both;
+    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:none;} }
+
+    .hero-label {
+      font-size: 0.68rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--crimson); margin-bottom: 1.2rem;
+    }
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 900; line-height: 0.95; letter-spacing: 4px;
+      background: linear-gradient(135deg, #fff 0%, var(--gold) 55%, #c08020 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub {
+      margin-top: 1.4rem; font-size: 0.95rem; font-weight: 300;
+      letter-spacing: 1px; color: var(--muted); max-width: 420px; margin-inline: auto;
     }
 
-    /* Section Heading */
-    h2 {
-      color: #ffc107;
-      text-shadow: 0 0 10px rgba(255,193,7,0.8);
-      animation: fadeInDown 1s ease;
+    /* SECTION */
+    .section-wrap {
+      position: relative; z-index: 1;
+      padding: 1rem 1.5rem 5rem;
+      max-width: 1440px; margin: 0 auto;
     }
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
+    .section-head { text-align: center; margin-bottom: 2.5rem; }
+    .section-eyebrow {
+      font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--crimson); display: block; margin-bottom: 0.6rem;
     }
-
-    /* Movie Cards */
-    .movie-card .card {
-      border: none;
-      border-radius: 20px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(10px);
-      color: #fff;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-      transition: transform 0.3s, box-shadow 0.3s;
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem); color: #fff; letter-spacing: 2px;
     }
-    .movie-card .card:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-    }
-    .card-img-top {
-      height: 380px;
-      object-fit: cover;
-      border-bottom: 2px solid rgba(255,255,255,0.2);
-    }
-    .card-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #ffc107;
+    .section-rule {
+      width: 50px; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 1rem auto 0;
     }
 
-    /* Buttons */
-    .btn-primary {
-      background: linear-gradient(45deg, #0d6efd, #6610f2);
-      border: none;
-      border-radius: 30px;
-      transition: transform 0.2s, box-shadow 0.3s;
-      font-weight: 500;
+    /* GENRE FILTER */
+    .genre-bar {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 0.6rem;
+      margin-bottom: 2.5rem;
     }
-    .btn-primary:hover {
-      transform: scale(1.08);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-      background: linear-gradient(45deg, #6610f2, #0d6efd);
+    .g-btn {
+      padding: 0.38rem 1.1rem;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--muted); border-radius: 2px;
+      font-family: 'Outfit', sans-serif; font-size: 0.7rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.25s;
+    }
+    .g-btn:hover, .g-btn.on {
+      background: var(--crimson); color: #fff; border-color: var(--crimson);
+      box-shadow: 0 0 16px var(--crimson-glow);
     }
 
-    /* Movie Grid */
+    /* MOVIE GRID */
     #movieList {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.6rem;
     }
 
-    /* No Results */
-    #noResults {
-      font-size: 1.3rem;
-      font-weight: 500;
-      color: #ddd;
+    /* 3D CARD */
+    .mc { perspective: 900px; animation: cardIn 0.6s both; }
+    @keyframes cardIn { from{opacity:0;transform:scale(0.9) translateY(20px);} to{opacity:1;transform:none;} }
+
+    .mc-inner {
+      position: relative; border-radius: 6px; overflow: hidden;
+      background: #0d0f1a; border: 1px solid var(--border);
+      transform-style: preserve-3d;
+      transition: transform 0.08s linear, box-shadow 0.4s;
+      cursor: pointer;
+    }
+    .mc-inner:hover {
+      box-shadow: 0 30px 70px rgba(0,0,0,0.8), 0 0 30px var(--crimson-glow);
+    }
+
+    .mc-img {
+      width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block;
+      transition: transform 0.5s ease, filter 0.4s;
+      filter: brightness(0.8) saturate(0.85);
+    }
+    .mc-inner:hover .mc-img {
+      transform: scale(1.06); filter: brightness(1) saturate(1.1);
+    }
+
+    .mc-sheen {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .mc-inner:hover .mc-sheen { opacity: 1; }
+
+    .mc-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(7,8,15,0.97) 0%, rgba(7,8,15,0.35) 55%, transparent 100%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.1rem;
+    }
+
+    .mc-badge {
+      position: absolute; top: 10px; right: 10px;
+      background: var(--crimson); color: #fff;
+      font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase;
+      padding: 0.22rem 0.55rem; border-radius: 1px; font-weight: 600;
+    }
+
+    .mc-genre {
+      font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.3rem;
+    }
+    .mc-title {
+      font-family: 'Cinzel', serif; font-size: 1.05rem;
+      letter-spacing: 1px; color: #fff; line-height: 1.15; margin-bottom: 0.45rem;
+    }
+    .mc-meta {
+      display: flex; gap: 0.8rem; font-size: 0.65rem;
+      color: var(--muted); margin-bottom: 0.9rem;
+    }
+    .mc-stars { color: var(--gold); }
+
+    .mc-actions {
+      display: flex; gap: 0.5rem;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.35s, transform 0.35s;
+    }
+    .mc-inner:hover .mc-actions { opacity: 1; transform: none; }
+
+    .btn-book {
+      flex: 1; padding: 0.55rem 0.5rem;
+      background: linear-gradient(135deg, var(--crimson), #8b1a1a);
+      border: none; border-radius: 3px;
+      font-family: 'Outfit', sans-serif; font-size: 0.65rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: #fff; font-weight: 600; cursor: pointer; text-decoration: none;
+      display: flex; align-items: center; justify-content: center; gap: 0.3rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .btn-book::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: translateX(-100%); transition: transform 0.4s;
+    }
+    .btn-book:hover::after { transform: translateX(100%); }
+    .btn-book:hover { transform: scale(1.04); box-shadow: 0 6px 20px var(--crimson-glow); }
+
+    .btn-wl {
+      padding: 0.55rem 0.7rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 3px; color: var(--muted); cursor: pointer; font-size: 0.85rem;
+      transition: border-color 0.2s, color 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .btn-wl:hover, .btn-wl.on { border-color: #e85; color: #e85; }
+
+    /* TOAST */
+    .toast-box {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(10px);
+      background: #fff; color: #07080f; padding: 0.7rem 2rem; border-radius: 2px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      z-index: 999; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .toast-box.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      padding: 2.5rem 1.5rem; border-top: 1px solid var(--border); text-align: center;
+    }
+    .brand-f {
+      font-family: 'Cinzel', serif; font-size: 1.2rem;
+      letter-spacing: 3px; color: var(--gold);
+      display: block; margin-bottom: 0.6rem;
+    }
+    footer p { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+
+    @media (max-width: 600px) {
+      #movieList { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .hero-title { font-size: 3rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="img/logo.png" alt="bOOk Picturr Logo" width="40" height="40" class="me-2">
-      <span>bOOk Picturr</span>
-    </a>
-
-    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+  
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">bOOk<span class="brand-dot">·</span>Picturr</a>
+    <button class="navbar-toggler border-secondary" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon" style="filter:invert(1)"></span>
     </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link text-light" href="details.html">ShowTimings</a></li>
-        <li class="nav-item"><a class="nav-link text-light" href="contact.html">ContactUs</a></li>
+    
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto me-3 gap-1">
+        <li class="nav-item"><a class="nav-link" href="details.html">ShowTimings</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">ContactUs</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">My Tickets</a></li>
       </ul>
-
-      <!-- Search Bar -->
-      <form class="d-flex ms-3">
-        <input id="searchInput" class="form-control" type="search" placeholder="Search Movies..." aria-label="Search">
-      </form>
+      <div class="search-wrap">
+        <svg class="search-icon" width="13" height="13" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input id="searchInput" type="search" placeholder="Search movies…">
+      </div>
     </div>
   </div>
 </nav>
 
-<!-- Movie Cards -->
-<div class="container my-5">
-  <h2 class="mb-4 fw-bold text-center">🎬 Recommended Movies..</h2>
-  <div class="row g-4" id="movieList">
-    
-    <!-- Movie 1 -->
-    <div class="col-md-3 movie-card">
-      <div class="card">
-        <img src="img/baahubali.jpg" class="card-img-top" alt="Bahubali Poster">
-        <div class="card-body text-center">
-          <h5 class="card-title">Bahubali</h5>
-          <a href="details.html" onclick="setMovie('Bahubali')" class="btn btn-primary w-10">Book Now</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Movie 2 -->
-    <div class="col-md-3 movie-card">
-      <div class="card">
-        <img src="img/rrr.png" class="card-img-top" alt="RRR Poster">
-        <div class="card-body text-center">
-          <h5 class="card-title">RRR</h5>
-          <a href="details.html" onclick="setMovie('RRR')" class="btn btn-primary w-10">Book Now</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Movie 3 -->
-    <div class="col-md-3 movie-card">
-      <div class="card">
-        <img src="img/pp.png" class="card-img-top" alt="Pushpa Poster">
-        <div class="card-body text-center">
-          <h5 class="card-title">Pushpa</h5>
-          <a href="details.html" onclick="setMovie('Pushpa')" class="btn btn-primary w-10">Book Now</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Movie 4 -->
-    <div class="col-md-3 movie-card">
-      <div class="card">
-        <img src="img/mirai.jpeg" class="card-img-top" alt="Mirai Poster">
-        <div class="card-body text-center">
-          <h5 class="card-title">Mirai</h5>
-          <a href="details.html" onclick="setMovie('Mirai')" class="btn btn-primary w-10">Book Now</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Movie 5 -->
-    <div class="col-md-3 movie-card">
-      <div class="card">
-        <img src="img/a aa.jpg" class="card-img-top" alt="A aa Poster">
-        <div class="card-body text-center">
-          <h5 class="card-title">A aa</h5>
-          <a href="details.html" onclick="setMovie('A aa')" class="btn btn-primary w-10">Book Now</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Movie 6 -->
-    <div class="col-md-3 movie-card">
-      <div class="card">
-        <img src="img/ismart shankar.jpg" class="card-img-top" alt="Ismart Shankar Poster">
-        <div class="card-body text-center">
-          <h5 class="card-title">Ismart Shankar</h5>
-          <a href="details.html" onclick="setMovie('Ismart Shankar')" class="btn btn-primary w-10">Book Now</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Movie 7 -->
-    <div class="col-md-3 movie-card">
-      <div class="card">
-        <img src="img/kanchana.jpg" class="card-img-top" alt="kanchana Poster">
-        <div class="card-body text-center">
-          <h5 class="card-title">kanchana</h5>
-          <a href="details.html" onclick="setMovie('kanchana')" class="btn btn-primary w-10">Book Now</a>
-        </div>
-      </div>
-    </div>
-  
-    <!-- Movie 8 -->
-    <div class="col-md-3 movie-card">
-      <div class="card">
-        <img src="img/devara.webp" class="card-img-top" alt="Devara Poster">
-        <div class="card-body text-center">
-          <h5 class="card-title">Devara</h5>
-          <a href="details.html" onclick="setMovie('Devara')" class="btn btn-primary w-10">Book Now</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- No Results Message -->
-  <p id="noResults" class="text-center mt-4" style="display:none;">No movies found..</p>
+<div class="hero">
+  <p class="hero-label">✦ Premium Cinema Booking ✦</p>
+  <h1 class="hero-title">scroll down<br>for   Movies</h1>
+  <p class="hero-sub">Your seat. Your story. Book the best cinema experience.</p>
 </div>
 
-<!-- JS -->
-<script>
-  function setMovie(movie) {
-    localStorage.setItem("movieName", movie);
-  }
+<div class="section-wrap">
+  <div class="section-head">
+    <span class="section-eyebrow">Now Showing & Coming Soon</span>
+    <h2 class="section-title">🎬 Choose Your Film</h2>
+    <div class="section-rule"></div>
+  </div>
 
-  document.getElementById("searchInput").addEventListener("keyup", function() {
-    let filter = this.value.trim().toLowerCase();
-    let movies = document.querySelectorAll(".movie-card");
-    let noResults = document.getElementById("noResults");
-    let visibleCount = 0;
+  <div class="genre-bar" id="genreBar">
+    <button class="g-btn on" data-g="all">All</button>
+    <button class="g-btn" data-g="action">Action</button>
+    <button class="g-btn" data-g="drama">Drama</button>
+    <button class="g-btn" data-g="thriller">Thriller</button>
+    <button class="g-btn" data-g="horror">Horror</button>
+    <button class="g-btn" data-g="animation">Animation</button>
+    <button class="g-btn" data-g="comedy">Comedy</button>
+    <button class="g-btn" data-g="romance">Romance</button>
+  </div>
 
-    movies.forEach(movie => {
-      let title = movie.querySelector(".card-title").innerText.toLowerCase();
-      let alt = movie.querySelector("img").alt.toLowerCase();
-      if (title.includes(filter) || alt.includes(filter)) {
-        movie.style.display = "";
-        visibleCount++;
-      } else {
-        movie.style.display = "none";
-      }
-    });
+  <div id="movieList"></div>
+</div>
 
-    noResults.style.display = visibleCount === 0 ? "block" : "none";
-  });
-</script>
+<footer>
+  <span class="brand-f">bOOk · Picturr</span>
+  <p>© 2025 bOOk Picturr · Premium Cinema Experience</p>
+</footer>
+
+<div class="toast-box" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const MOVIES = [
+  { id:1,  title:'Bahubali',                genre:'action',    year:2015, rating:8.1, dur:'163m', badge:'Epic',        img:'img/baahubali.jpg' },
+  { id:2,  title:'RRR',                     genre:'action',    year:2022, rating:7.8, dur:'182m', badge:'Hit',         img:'img/rrr.png' },
+  { id:3,  title:'Pushpa',                  genre:'thriller',  year:2021, rating:7.6, dur:'179m', badge:'Popular',     img:'img/pp.png' },
+  { id:4,  title:'Mirai',                   genre:'animation', year:2018, rating:7.4, dur:'98m',  badge:'Award',       img:'img/mirai.jpeg' },
+  { id:5,  title:'A Aa',                    genre:'romance',   year:2016, rating:7.3, dur:'162m', badge:null,          img:'img/a aa.jpg' },
+  { id:6,  title:'Ismart Shankar',          genre:'action',    year:2019, rating:6.9, dur:'145m', badge:null,          img:'img/ismart shankar.jpg' },
+  { id:7,  title:'Kanchana',                genre:'horror',    year:2011, rating:7.1, dur:'142m', badge:'Classic',     img:'img/kanchana.jpg' },
+  { id:8,  title:'Devara',                  genre:'action',    year:2024, rating:6.8, dur:'166m', badge:'New',         img:'img/devara.webp' },
+  { id:9,  title:'Kalki 2898 AD',           genre:'action',    year:2024, rating:7.2, dur:'181m', badge:'New',         img:'img/kalki.jpg' },
+  { id:10, title:'HanuMan',                 genre:'action',    year:2024, rating:7.8, dur:'157m', badge:'Hit',         img:'img/hanuman.jpg' },
+  { id:11, title:'Guntur Kaaram',           genre:'drama',     year:2024, rating:6.5, dur:'159m', badge:null,          img:'img/gunturkaaram.jpg' },
+  { id:12, title:'Salaar',                  genre:'action',    year:2023, rating:7.0, dur:'175m', badge:'Intense',     img:'img/salaar.jpg' },
+  { id:13, title:'Dasara',                  genre:'action',    year:2023, rating:7.1, dur:'165m', badge:null,          img:'img/dasara.jpg' },
+  { id:14, title:'Vikram',                  genre:'thriller',  year:2022, rating:8.4, dur:'174m', badge:'Must See',    img:'img/vikram.jpg' },
+  { id:15, title:'KGF Chapter 2',           genre:'action',    year:2022, rating:8.2, dur:'168m', badge:'Blockbuster', img:'img/kgf2.jpg' },
+  { id:16, title:'Kantara',                 genre:'thriller',  year:2022, rating:8.5, dur:'148m', badge:'Legend',      img:'img/kantara.jpg' },
+  { id:17, title:'Jersey',                  genre:'drama',     year:2022, rating:7.5, dur:'168m', badge:null,          img:'img/jersey.jpg' },
+  { id:18, title:'Sita Ramam',              genre:'romance',   year:2022, rating:8.2, dur:'165m', badge:'Gem',         img:'img/sitaramam.jpg' },
+  { id:19, title:'Bheemla Nayak',           genre:'action',    year:2022, rating:7.3, dur:'152m', badge:null,          img:'img/bheemla.jpg' },
+  { id:20, title:'Major',                   genre:'drama',     year:2022, rating:8.0, dur:'137m', badge:'True Story',  img:'img/major.jpg' },
+  { id:21, title:'Arjun Reddy',             genre:'drama',     year:2017, rating:8.1, dur:'186m', badge:'Classic',     img:'img/arjunreddy.jpg' },
+  { id:22, title:'Fidaa',                   genre:'romance',   year:2017, rating:7.5, dur:'155m', badge:null,          img:'img/fidaa.jpg' },
+  { id:23, title:'Maharshi',                genre:'drama',     year:2019, rating:7.3, dur:'176m', badge:null,          img:'img/maharshi.jpg' },
+  { id:24, title:'Ala Vaikunthapurramuloo', genre:'comedy',    year:2020, rating:7.8, dur:'168m', badge:'Fun',         img:'img/alav.jpg' },
+  { id:25, title:'Sarileru Neekevvaru',     genre:'action',    year:2020, rating:7.0, dur:'175m', badge:null,          img:'img/sarileru.jpg' },
+  { id:26, title:'Narappa',                 genre:'drama',     year:2021, rating:7.2, dur:'144m', badge:null,          img:'img/narappa.jpg' },
+  { id:27, title:'Eega',                    genre:'thriller',  year:2012, rating:7.8, dur:'132m', badge:'Cult',        img:'img/eega.jpg' },
+];
+
+let wishlist = new Set();
+let activeGenre = 'all';
+let searchTerm = '';
+
+function render() {
+  const list = document.getElementById('movieList');
+  const filtered = MOVIES.filter(m =>
+    (activeGenre === 'all' || m.genre === activeGenre) &&
+    m.title.toLowerCase().includes(searchTerm)
+  );
+
+  if (!filtered.length) {
+    list.innerHTML = '<p style="display:block;text-align:center;padding:3rem;color:var(--muted);letter-spacing:1px;grid-column:1/-1;">No movies found.</p>';
+    return;
+  }
+
+  list.innerHTML = filtered.map((m, i) => `
+    <div class="mc" style="animation-delay:${i * 45}ms">
+      <div class="mc-inner" onmousemove="tilt3d(event,this)" onmouseleave="untilt(this)">
+        ${m.badge ? `<div class="mc-badge">${m.badge}</div>` : ''}
+        <img class="mc-img" src="${m.img}" alt="${m.title} Poster"
+          onerror="this.style.cssText='background:linear-gradient(135deg,#1a0010,#0d1a35);height:260px;display:block;width:100%;'">
+        <div class="mc-sheen"></div>
+        <div class="mc-overlay">
+          <div class="mc-genre">${m.genre}</div>
+          <div class="mc-title">${m.title}</div>
+          <div class="mc-meta">
+            <span class="mc-stars">★ ${m.rating}</span>
+            <span>${m.year}</span>
+            <span>${m.dur}</span>
+          </div>
+          <div class="mc-actions">
+            <a class="btn-book" href="details.html" onclick="pick('${m.title.replace(/'/g,"\\'")}')">🎟 Book Now</a>
+            <button class="btn-wl ${wishlist.has(m.id)?'on':''}"
+                    onclick="toggleWL(event,${m.id},this)">${wishlist.has(m.id)?'♥':'♡'}</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function tilt3d(e, el) {
+  const r = el.getBoundingClientRect();
+  const x = ((e.clientX - r.left) / r.width  - 0.5) * 18;
+  const y = ((e.clientY - r.top)  / r.height - 0.5) * 18;
+  el.style.transform = `perspective(800px) rotateX(${-y}deg) rotateY(${x}deg) scale3d(1.05,1.05,1.05)`;
+}
+function untilt(el) { el.style.transform = ''; }
+
+function toggleWL(e, id, btn) {
+  e.preventDefault(); e.stopPropagation();
+  if (wishlist.has(id)) {
+    wishlist.delete(id); btn.textContent = '♡'; btn.classList.remove('on');
+    toast('Removed from wishlist');
+  } else {
+    wishlist.add(id); btn.textContent = '♥'; btn.classList.add('on');
+    toast('Added to wishlist ♥');
+  }
+}
+
+function pick(name) { localStorage.setItem('movieName', name); }
+
+document.getElementById('genreBar').addEventListener('click', e => {
+  if (!e.target.matches('.g-btn')) return;
+  document.querySelectorAll('.g-btn').forEach(b => b.classList.remove('on'));
+  e.target.classList.add('on');
+  activeGenre = e.target.dataset.g;
+  render();
+});
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  searchTerm = this.value.trim().toLowerCase();
+  render();
+});
+
+let tt;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+render();
+</script>
 </body>
 </html>

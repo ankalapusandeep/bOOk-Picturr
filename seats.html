@@ -4,259 +4,642 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Select Seats - bOOk Picturr</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
+
+    :root {
+      --crimson: #c0392b;
+      --crimson-glow: rgba(192,57,43,0.5);
+      --gold: #f0c040;
+      --deep: #07080f;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text: #ddd8cc;
+      --muted: rgba(221,216,204,0.5);
+      --green: #2ecc71;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #fff;
+      background: var(--deep);
+      font-family: 'Outfit', sans-serif;
+      color: var(--text);
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* Navbar */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(192,57,43,0.08), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(240,192,64,0.06), transparent 60%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, rgba(15,20,40,0.95), var(--deep) 100%);
+    }
+
+    /* NAVBAR */
+
     .navbar {
-      background: linear-gradient(90deg, #0d6efd, #6610f2);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,8,15,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 1.5rem;
+      animation: slideDown 0.7s ease both;
     }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
     .navbar-brand {
-      font-weight: bold;
-      font-size: 1.4rem;
-      color: #fff !important;
+      font-family: 'Cinzel', serif;
+      font-size: 1.45rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--gold) !important;
+      text-shadow: 0 0 20px rgba(240,192,64,0.5);
+      text-decoration: none;
     }
+
     .navbar-brand:hover {
-      text-shadow: 0 0 8px #ffc107;
+      text-shadow: 0 0 40px rgba(240,192,64,0.9);
     }
 
-    /* Back Button */
-    #backBtnContainer .btn {
-      border-radius: 30px;
-      font-weight: 500;
-      border: 2px solid #ffc107;
-      color: #ffc107;
-      transition: 0.3s;
-    }
-    #backBtnContainer .btn:hover {
-      background: #ffc107;
-      color: #000;
-      transform: scale(1.05);
-      box-shadow: 0 0 12px rgba(255,193,7,0.8);
+    .brand-dot {
+      color: var(--crimson);
     }
 
-    /* Date Picker */
-    #showDate {
-      border-radius: 25px;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      text-align: center;
+    /* PAGE */
+
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      padding: 3rem 1rem 5rem;
     }
 
-    /* Screen */
-    .screen {
-      background: linear-gradient(90deg, #6c757d, #adb5bd);
-      color: #000;
-      height: 45px;
-      margin: 20px auto;
-      width: 80%;
+    /* BACK BUTTON */
+
+    .back-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      padding: 0.55rem 1.2rem;
+      border-radius: 3px;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: var(--crimson);
+      border-color: var(--crimson);
+      color: #fff;
+      box-shadow: 0 0 18px var(--crimson-glow);
+      transform: translateX(-4px);
+    }
+
+    /* MAIN CARD */
+
+    .booking-container {
+      max-width: 1000px;
+      margin: 3rem auto 0;
+      padding: 3rem 2rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
       border-radius: 10px;
-      font-weight: bold;
-      text-align: center;
-      line-height: 45px;
-      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+      animation: fadeUp 0.9s ease both;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Seats */
+    .booking-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        transparent,
+        rgba(240,192,64,0.04),
+        transparent
+      );
+      pointer-events: none;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(35px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+
+    .main-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 1rem;
+      background: linear-gradient(
+        135deg,
+        #fff 0%,
+        var(--gold) 55%,
+        #c08020 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .section-rule {
+      width: 55px;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        var(--gold),
+        transparent
+      );
+      margin: 1rem auto 2rem;
+    }
+
+    /* DATE INPUT */
+
+    #showDate {
+      max-width: 320px;
+      margin: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 4px;
+      padding: 0.9rem 1rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    #showDate:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 15px rgba(240,192,64,0.2);
+      outline: none;
+    }
+
+    /* SCREEN */
+
+    .screen {
+      width: 80%;
+      margin: 2rem auto 3rem;
+      background: linear-gradient(
+        to right,
+        #aaa,
+        #f5f5f5,
+        #aaa
+      );
+      color: #000;
+      font-weight: bold;
+      padding: 1rem;
+      border-radius: 100px;
+      text-align: center;
+      letter-spacing: 5px;
+      box-shadow:
+        0 0 30px rgba(255,255,255,0.4),
+        0 10px 40px rgba(0,0,0,0.4);
+      transform: perspective(400px) rotateX(-30deg);
+    }
+
+    /* SEATS */
+
+    #seatsContainer {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
     .seat {
-      width: 38px;
-      height: 38px;
-      margin: 5px;
-      background: rgba(255,255,255,0.1);
-      border: 2px solid rgba(255,255,255,0.2);
-      border-radius: 6px;
-      cursor: pointer;
-      transition: 0.3s;
+      width: 40px;
+      height: 40px;
+      margin: 6px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      border-radius: 5px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
       font-size: 11px;
-      color: #fff;
-      backdrop-filter: blur(6px);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(8px);
     }
+
     .seat:hover:not(.occupied):not(.selected) {
-      background: #ffc107;
+      background: var(--gold);
       color: #000;
       transform: scale(1.1);
-      box-shadow: 0 0 12px rgba(255,193,7,0.9);
-    }
-    .seat.selected {
-      background: #28a745;
-      border-color: #28a745;
-      box-shadow: 0 0 10px rgba(40,167,69,0.8);
-      color: #fff;
-    }
-    .seat.occupied {
-      background: #6c757d;
-      color: #fff;
-      border: 2px solid #444;
-      cursor: not-allowed;
+      box-shadow: 0 0 18px rgba(240,192,64,0.7);
     }
 
-    /* Legend */
+    .seat.selected {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(46,204,113,0.7);
+    }
+
+    .seat.occupied {
+      background: #444;
+      border-color: #666;
+      color: #aaa;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* LEGEND */
+
+    .legend {
+      margin-top: 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
     .legend span {
       display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-right: 5px;
-      border-radius: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      margin-right: 6px;
+      vertical-align: middle;
     }
-    .available-box { background-color: rgba(255,255,255,0.2); }
-    .selected-box  { background-color: #28a745; }
-    .occupied-box  { background-color: #6c757d; }
 
-    /* Confirm Button */
-    .btn-success {
-      border-radius: 30px;
-      font-weight: 600;
-      padding: 0.7rem 2rem;
-      background: linear-gradient(45deg, #28a745, #218838);
+    .available-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .selected-box {
+      background: var(--green);
+    }
+
+    .occupied-box {
+      background: #444;
+    }
+
+    /* INFO */
+
+    .booking-info {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .booking-info h5 {
+      margin-bottom: 0.8rem;
+      color: var(--text);
+      letter-spacing: 1px;
+    }
+
+    /* BUTTON */
+
+    .confirm-btn {
+      margin-top: 1.5rem;
+      padding: 0.95rem 2.5rem;
       border: none;
-      transition: 0.3s;
+      border-radius: 4px;
+      background: linear-gradient(
+        135deg,
+        var(--crimson),
+        #8b1a1a
+      );
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .btn-success:hover {
-      background: linear-gradient(45deg, #218838, #1e7e34);
-      transform: scale(1.07);
-      box-shadow: 0 0 15px rgba(40,167,69,0.8);
+
+    .confirm-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.15),
+        transparent
+      );
+      transform: translateX(-100%);
+      transition: transform 0.45s;
     }
+
+    .confirm-btn:hover::after {
+      transform: translateX(100%);
+    }
+
+    .confirm-btn:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 10px 28px var(--crimson-glow);
+    }
+
+    /* FOOTER */
+
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+
+      .seat {
+        width: 32px;
+        height: 32px;
+        margin: 4px;
+        font-size: 9px;
+      }
+
+      .booking-container {
+        padding: 2rem 1rem;
+      }
+
+      .screen {
+        width: 95%;
+      }
+    }
+
   </style>
 </head>
+
 <body>
 
-<!-- Navbar -->
+<!-- NAVBAR -->
+
 <nav class="navbar navbar-expand-lg">
-  <div class="container">
-    <a class="navbar-brand" href="index.html">🎬 bOOk Picturr</a>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">
+      bOOk<span class="brand-dot">·</span>Picturr
+    </a>
   </div>
 </nav>
 
-<!-- Back Button -->
-<div class="container my-3" id="backBtnContainer" style="display:none;">
-  <button class="btn" onclick="history.back()">← Back</button>
-</div>
+<div class="page-wrap">
 
-<!-- Date Selection -->
-<div class="container my-4 text-center">
-  <label for="showDate" class="form-label fw-bold text-warning">Select Date:</label>
-  <input type="date" id="showDate" class="form-control w-50 mx-auto" required>
-</div>
+  <!-- BACK BUTTON -->
 
-<!-- Booking Section -->
-<div class="container my-5 text-center">
-  <h2 class="mb-4 text-warning">Select Your Seats</h2>
-
-  <div class="screen">SCREEN</div>
-  <div id="seatsContainer" class="text-center"></div>
-
-  <!-- Legend -->
-  <div class="legend text-center mt-4">
-    <p>
-      <span class="available-box"></span> Available
-      <span class="selected-box"></span> Selected
-      <span class="occupied-box"></span> Occupied
-    </p>
+  <div class="container" id="backBtnContainer" style="display:none;">
+    <button class="back-btn" onclick="history.back()">← Back</button>
   </div>
 
-  <div class="mt-4">
-    <h5>Selected Seats: <span id="count">0</span></h5>
-    <h5>Total Price: ₹<span id="total">0</span></h5>
-    <button class="btn btn-success btn-lg mt-3" onclick="confirmBooking()">Confirm Booking</button>
+  <!-- BOOKING -->
+
+  <div class="booking-container">
+
+    <p class="eyebrow">✦ Premium Cinema Booking ✦</p>
+
+    <h2 class="main-title">Select Your Seats</h2>
+
+    <p class="subtitle">Choose your perfect cinema experience</p>
+
+    <div class="section-rule"></div>
+
+    <!-- DATE -->
+
+    <div class="text-center mb-5">
+      <label for="showDate" class="mb-3 d-block text-uppercase" style="letter-spacing:2px;color:var(--gold)">
+        Select Date
+      </label>
+
+      <input type="date" id="showDate" class="form-control">
+    </div>
+
+    <!-- SCREEN -->
+
+    <div class="screen">SCREEN</div>
+
+    <!-- SEATS -->
+
+    <div id="seatsContainer"></div>
+
+    <!-- LEGEND -->
+
+    <div class="legend text-center">
+      <p>
+        <span class="available-box"></span> Available
+
+        &nbsp;&nbsp;&nbsp;
+
+        <span class="selected-box"></span> Selected
+
+        &nbsp;&nbsp;&nbsp;
+
+        <span class="occupied-box"></span> Occupied
+      </p>
+    </div>
+
+    <!-- INFO -->
+
+    <div class="booking-info">
+
+      <h5>
+        Selected Seats:
+        <span id="count">0</span>
+      </h5>
+
+      <h5>
+        Total Price:
+        ₹<span id="total">0</span>
+      </h5>
+
+      <button class="confirm-btn" onclick="confirmBooking()">
+        Confirm Booking
+      </button>
+
+    </div>
+
   </div>
+
 </div>
+
+<footer>
+  © 2025 bOOk Picturr · Premium Cinema Experience
+</footer>
 
 <script>
-  // Show back button on all pages except index.html
+
+  // Show back button
+
   if (!window.location.pathname.endsWith("index.html")) {
     document.getElementById("backBtnContainer").style.display = "block";
   }
 
   const seatsContainer = document.getElementById("seatsContainer");
-  const count  = document.getElementById("count");
-  const total  = document.getElementById("total");
+  const count = document.getElementById("count");
+  const total = document.getElementById("total");
   const dateInput = document.getElementById("showDate");
 
   const ticketPrice = 5;
+
   let seatNumbers = [];
 
-  const rows = 8; // A–H
-  const cols = 15; // 1–15
+  const rows = 8;
+  const cols = 15;
 
-   // ✅ Disable past dates
+  // Disable past dates
+
   const today = new Date();
+
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const dd = String(today.getDate()).padStart(2, "0");
+
   const minDate = `${yyyy}-${mm}-${dd}`;
+
   dateInput.setAttribute("min", minDate);
 
-
   // Generate seats
+
   for (let r = 0; r < rows; r++) {
+
     for (let c = 1; c <= cols; c++) {
+
       const seat = document.createElement("div");
+
       seat.classList.add("seat");
+
       const seatNumber = String.fromCharCode(65 + r) + c;
+
       seat.dataset.seat = seatNumber;
+
       seat.innerText = seatNumber;
 
       // Random occupied
-      if (Math.random() < 0.2) seat.classList.add("occupied");
+
+      if (Math.random() < 0.2) {
+        seat.classList.add("occupied");
+      }
 
       seat.addEventListener("click", () => {
+
         if (!seat.classList.contains("occupied")) {
+
           seat.classList.toggle("selected");
+
           updateSelectedCount();
         }
+
       });
 
       seatsContainer.appendChild(seat);
     }
+
     seatsContainer.appendChild(document.createElement("br"));
   }
 
   function updateSelectedCount() {
+
     const selectedSeats = document.querySelectorAll(".seat.selected");
-    seatNumbers = Array.from(selectedSeats).map(s => s.dataset.seat);
+
+    seatNumbers = Array.from(selectedSeats).map(
+      s => s.dataset.seat
+    );
+
     count.textContent = seatNumbers.length;
+
     total.textContent = seatNumbers.length * ticketPrice;
   }
 
   function requireDateAndSeats() {
+
     if (!dateInput.value) {
+
       alert("Please select a date!");
+
       return false;
     }
+
     if (seatNumbers.length === 0) {
+
       alert("Please select at least one seat!");
+
       return false;
     }
+
     return true;
   }
 
   function confirmBooking() {
+
     if (!requireDateAndSeats()) return;
 
     const selectedDate = dateInput.value;
+
     const amount = seatNumbers.length * ticketPrice;
 
     localStorage.setItem("date", selectedDate);
+
     localStorage.setItem("seats", seatNumbers.join(", "));
+
     localStorage.setItem("seatsCount", seatNumbers.length);
+
     localStorage.setItem("totalPrice", amount);
 
     // Redirect
+
     window.location.href = "confirmation.html";
   }
+
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
