@@ -593,7 +593,7 @@
 
 <script>
 
-  emailjs.init("9sTIa1QgxqfcPR6e-");
+  emailjs.init("40yZeRBtJNJtJvhIb");
 
   const movie =
     localStorage.getItem("movieName") || "N/A";
@@ -697,11 +697,14 @@ Amount: ₹${amount}`;
       "success"
     );
 
-    emailjs.send(
-      "service_0fktii5",
-      "template_rpazhtp",
-      templateParams
-    )
+   console.log(templateParams);
+
+emailjs.send(
+  "service_0fktii5",
+  "template_rpazhtp",
+  templateParams,
+  "40yZeRBtJNJtJvhIb"
+)
 
     .then(() => {
 
